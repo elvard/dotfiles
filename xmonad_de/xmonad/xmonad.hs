@@ -44,7 +44,7 @@ myConfig hs = let config = ewmh kde4Config {
     , startupHook        = setWMName "LG3D"
     , terminal           = myTerminal
     , normalBorderColor  = Sol.base02
-    , focusedBorderColor = Sol.magenta
+    , focusedBorderColor = Sol.green
     } in addDescrKeys ((confModMask, xK_F1), showKeybindings) myKeys $ config
     where
         showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
