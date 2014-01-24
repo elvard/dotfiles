@@ -1,0 +1,5 @@
+[user]
+	name = Tomáš Ehrlich
+	email = tomas.ehrlich@gmail.com
+[alias]
+	ci = commit
