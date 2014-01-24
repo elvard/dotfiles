@@ -1,5 +1,11 @@
 [user]
 	name = Tomáš Ehrlich
 	email = tomas.ehrlich@gmail.com
+	signingkey = 0x4EE641D7
+[color]
+	ui = true
 [alias]
+	co = checkout
 	ci = commit
+[core]
+	pager = less -FRSX
