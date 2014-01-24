@@ -1,0 +1,58 @@
+!---- Xmessage, zenburnesque {
+Xmessage*form.*.shapeStyle:           rectangle
+Xmessage*Scrollbar.width:             4
+Xmessage*Scrollbar.borderWidth:       0
+! Xmessage*Buttons:                     Quit
+! Xmessage*defaultButton:               Quit
+Xmessage*geometry:                    +20+20
+
+!---- URxvt - General settings {
+URxvt*fading:                         0
+URxvt*:borderLess:                    true
+URxvt*internalBorder:                 7
+
+URxvt*cursorBlink:                    false
+URxvt*font:                           xft:DejaVu Sans Mono:size=9
+! NOTE letter spacing is specific to pragmata pro here!
+! URxvt.letterSpace:                         -2
+URxvt*jumpScroll:                     true
+URxvt*scrollBar:                      off
+URxvt*saveLines:                      20000
+URxvt*scrollWithBuffer:               true
+URxvt*scrollTtyOutput:                false
+URxvt*scrollTtyKeypress:              true
+URxvt*urgentOnBell:                   true
+URxvt*visualBell:                     false
+URxvt*tabbed.autohide:                false
+URxvt*tabbed.tabbar-fg:               10
+URxvt*tabbed.tabbar-bg:               0
+URxvt*tabbed.tab-fg:                  0
+URxvt*tabbed.tab-bg:                  4
+URxvt*tabbed.title-fg:                4
+URxvt*tabbed.title-bg:                0
+URxvt*tabbed.repoen-on-close:         yes
+URxvt*matcher.button:                 1
+URxvt.print-pipe:                     cat > $(echo urxvt.scrollback.$(date +'%Y-%m-%d.%H_%m_%S'))
+URxvt*searchable-scrollback:          M-s
+URxvt*url-select.launcher:            x-www-browser
+URxvt*url-select.underline:           true
+URxvt*clipboard.autocopy:             true
+URxvt*dynamicColors:                  on
+
+!---- URxvt - Scratcpad terminals {
+scratchpad_smallTerminal*scrollBar:        false
+
+scratchpad_largeTerminal*scrollBar:        false
+
+htop*saveLines:                            0
+htop*scrollBar:                            false
+
+dstat*internalBorder:                      8
+dstat*saveLines:                           1000
+dstat*scrollBar:                           8
+
+pamixer*saveLines:                         0
+pamixer*scrollBar:                         false
+
+ncmpcpp*scrollBar:                         false
+ncmpcpp*saveLines:                         0
