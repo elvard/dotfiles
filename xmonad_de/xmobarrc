@@ -1,0 +1,12 @@
+Config {
+	 commands = 
+        [ Run StdinReader 
+        , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
+        ]
+    , position = BottomW L 100
+    , bgColor = "black",
+    , fgColor = "white",
+    , font = "xft:DejaVu Sans Mono:size=10"
+    , template = " %StdinReader% }{ %pomodoro%"
+    , lowerOnStart = False
+}
