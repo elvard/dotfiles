@@ -22,8 +22,10 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ICCCMFocus
 import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Layout.NoBorders
+import           XMonad.Layout.Fullscreen (fullscreenManageHook)
 import           XMonad.Util.EZConfig
 import           XMonad.Util.NamedActions
 import           XMonad.Util.NamedScratchpad
@@ -37,14 +39,14 @@ myTerminal = "urxvtc"
 
 myConfig hs = let config = ewmh kde4Config { 
       modMask            = confModMask
-    , handleEventHook    = handleEventHook kde4Config <+> fullscreenEventHook
+    , handleEventHook    = myEventHook
     , manageHook         = myManageHook
     , layoutHook         = myLayout
     , logHook            = myLogHook hs
-    , startupHook        = setWMName "LG3D"
+    , startupHook        = myStartupHook
     , terminal           = myTerminal
     , normalBorderColor  = Sol.base02
-    , focusedBorderColor = Sol.green
+    , focusedBorderColor = Sol.yellow
     } in addDescrKeys ((confModMask, xK_F1), showKeybindings) myKeys $ config
     where
         showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
@@ -58,24 +60,31 @@ myLogHook hs = do
     multiPP'
         (mergePPOutputs [dynamicLogString . onlyTitle])
         myPP
-        myPP { ppTitle = const "" }
+        myPP { ppTitle = xmobarColor Sol.base01 "" }
         hs
     --updatePointer (Relative 0.95 0.95)
+
+myEventHook = 
+        handleEventHook kde4Config 
+    <+> fullscreenEventHook
  
 myManageHook = 
-        manageHook kde4Config 
-    <+> manageDocks 
+        fullscreenManageHook
     <+> namedScratchpadManageHook myScratchPads
     <+> (composeAll . concat $
     [ [ className   =? c --> doFloat           | c <- myFloats]
     , [ title       =? t --> doFloat           | t <- myOtherFloats]
     , [ className   =? c --> doF (W.shift "2") | c <- webApps]
-    , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
+    , [ isFullscreen --> doFullFloat
+      , isDialog     --> doFloat
+      ]
     ])
+    <+> manageDocks 
   where myFloats      = ["MPlayer", "Yakuake", "Plasma", "Plasma-desktop"]
         myOtherFloats = ["alsamixer"]
         webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
-        ircApps       = ["Ksirc"]                -- open on desktop 3
+
+myStartupHook = setWMName "LG3D"
 
 myKeys conf = 
     subtitle "Cyclic display actions": mkNamedKeymap conf
@@ -97,7 +106,7 @@ myKeys conf =
         toggleScratch cmd' = addName("Toggle " ++ cmd' ++ " scratchpad ") $ namedScratchpadAction myScratchPads cmd'
         
 
-myLayout = desktopLayoutModifiers $ avoidStruts $ smartBorders $ Full ||| tiled
+myLayout = desktopLayoutModifiers $ smartBorders $ avoidStruts $ Full ||| tiled
     where
         tiled   = Tall nmaster delta ratio
         nmaster = 1
@@ -120,6 +129,22 @@ myCenterFloat w h = customFloating $ W.RationalRect left top width height
     height = h
     left = (1 - width) / 2
     top = (1 - height) / 2
+ 
+myPP :: PP
+myPP = defaultPP {
+      ppLayout  = xmobarColor Sol.yellow ""
+    , ppUrgent  = xmobarColor Sol.red "" . ('^':)
+    , ppTitle   = xmobarColor Sol.green ""
+}
+
+onlyTitle :: PP -> PP
+onlyTitle pp = defaultPP { 
+                           ppCurrent = const ""
+                         , ppHidden = const ""
+                         , ppVisible = const ""
+                         , ppLayout = ppLayout pp
+                         , ppTitle = ppTitle pp }
+ 
 
 getScreens :: IO [Int]
 getScreens = openDisplay "" >>= liftA2 (<*) f closeDisplay
@@ -150,22 +175,8 @@ multiPP' dynlStr focusPP unfocusPP handles = do
 mergePPOutputs :: [PP -> X String] -> PP -> X String
 mergePPOutputs x pp = fmap (intercalate (ppSep pp)) . sequence . sequence x $ pp
  
-onlyTitle :: PP -> PP
-onlyTitle pp = defaultPP { 
-                           ppCurrent = const ""
-                         , ppHidden = const ""
-                         , ppVisible = const ""
-                         , ppLayout = ppLayout pp
-                         , ppTitle = ppTitle pp }
- 
 xmobarScreen :: Int -> IO Handle
 xmobarScreen = spawnPipe . ("xmobar -x " ++) . show
- 
-myPP :: PP
-myPP = sjanssenPP {
-    ppLayout = xmobarColor "orange" "",
-    ppUrgent = xmobarColor "red" "" . ('^':)
-}
 
 main :: IO ()
 main = do

@@ -1,12 +1,29 @@
 Config {
 	 commands = 
         [ Run StdinReader 
+        , Run Memory ["-t", "M: <usedratio>",
+                      "-S", "true",
+                      "-w", "3"] 20
+        , Run Swap ["-t", "S: <usedratio>",
+                    "-S", "true"] 20
+        , Run MultiCpu ["-t", "CPU: <autototal>",
+                        "-S", "true",
+                        "-L", "20",
+                        "-h", "60",
+                        "-n", "#859900",
+                        "-w", "3"] 20
+        , Run ThermalZone 0 ["-t", "<temp>°C",
+                             "-L", "50",
+                             "-h", "70",
+                             "-n", "#859900"] 20
+        , Run Kbd [("cz(qwerty)", "cz")]
         , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
+        , Run DateZone "%V, %a %d. %B %H:%M" "" "" "date" 10
         ]
     , position = BottomW L 100
-    , bgColor = "black",
-    , fgColor = "white",
-    , font = "xft:DejaVu Sans Mono:size=10"
-    , template = " %StdinReader% }{ %pomodoro%"
+    , bgColor = "#002b36",
+    , fgColor = "#93a1a1",
+    , font = "xft:Droid Sans Mono:size=9:antialias=True"
+    , template = " %StdinReader% }{ %pomodoro% | <fc=#fdf3e3>%kbd%</fc> | %memory% %swap% | %multicpu%  %thermal0% |<fc=#fdf3e3> %date% </fc>"
     , lowerOnStart = False
 }
