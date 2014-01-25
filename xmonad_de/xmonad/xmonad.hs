@@ -24,20 +24,22 @@ import           XMonad.Hooks.ICCCMFocus
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
+import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Fullscreen (fullscreenManageHook)
+import qualified XMonad.StackSet as W
 import           XMonad.Util.EZConfig
 import           XMonad.Util.NamedActions
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Run
 import           XMonad.Util.Replace (replace)
-import qualified XMonad.StackSet as W
+import           XMonad.Util.WorkspaceCompare
 
 confModMask = mod4Mask
 
 myTerminal = "urxvtc"
 
-myConfig hs = let config = ewmh kde4Config { 
+myConfig hs = let config = ewmh $ withUrgencyHook NoUrgencyHook $ kde4Config { 
       modMask            = confModMask
     , handleEventHook    = myEventHook
     , manageHook         = myManageHook
@@ -57,12 +59,8 @@ myConfig hs = let config = ewmh kde4Config {
             return ()
 
 myLogHook hs = do
-    multiPP'
-        (mergePPOutputs [dynamicLogString . onlyTitle])
-        myPP
-        myPP { ppTitle = xmobarColor Sol.base01 "" }
-        hs
-    --updatePointer (Relative 0.95 0.95)
+    multiPP focusedScreenPP unfocusedScreenPP hs
+    updatePointer (Relative 0.95 0.95)
 
 myEventHook = 
         handleEventHook kde4Config 
@@ -114,7 +112,6 @@ myLayout = desktopLayoutModifiers $ smartBorders $ avoidStruts $ Full ||| tiled
         delta   = 3/100
 
 myScratchPads = [ NS "terminal" (term "terminal") (res =? scratch "terminal") $ myCenterFloat 0.95 0.8
-                --, termScratch "pamixer" $ myCenterFloat 0.7 0.2
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
@@ -130,21 +127,19 @@ myCenterFloat w h = customFloating $ W.RationalRect left top width height
     left = (1 - width) / 2
     top = (1 - height) / 2
  
-myPP :: PP
-myPP = defaultPP {
+focusedScreenPP :: PP
+focusedScreenPP = namedScratchpadFilterOutWorkspacePP $ defaultPP {
       ppLayout  = xmobarColor Sol.yellow ""
-    , ppUrgent  = xmobarColor Sol.red "" . ('^':)
+    , ppCurrent = xmobarColor Sol.blue "" . wrap "[" "]"
+    , ppVisible = xmobarColor Sol.base3 "" . wrap "<" ">"
+    , ppUrgent  = xmobarColor Sol.red ""
     , ppTitle   = xmobarColor Sol.green ""
+    , ppSep     = " | "
+    , ppSort    = getSortByXineramaRule
 }
 
-onlyTitle :: PP -> PP
-onlyTitle pp = defaultPP { 
-                           ppCurrent = const ""
-                         , ppHidden = const ""
-                         , ppVisible = const ""
-                         , ppLayout = ppLayout pp
-                         , ppTitle = ppTitle pp }
- 
+unfocusedScreenPP :: PP
+unfocusedScreenPP =  focusedScreenPP { ppTitle = xmobarColor Sol.base01 "" }
 
 getScreens :: IO [Int]
 getScreens = openDisplay "" >>= liftA2 (<*) f closeDisplay
@@ -171,9 +166,6 @@ multiPP' dynlStr focusPP unfocusPP handles = do
         =<< execWriterT . (io . zipWithM_ hPutStrLn handles <=< mapM pickPP) . catMaybes
         =<< mapM screenWorkspace (zipWith const [0..] handles)
     return ()
- 
-mergePPOutputs :: [PP -> X String] -> PP -> X String
-mergePPOutputs x pp = fmap (intercalate (ppSep pp)) . sequence . sequence x $ pp
  
 xmobarScreen :: Int -> IO Handle
 xmobarScreen = spawnPipe . ("xmobar -x " ++) . show
