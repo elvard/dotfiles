@@ -13,8 +13,6 @@ URxvt*internalBorder:                 7
 
 URxvt*cursorBlink:                    false
 URxvt*font:                           xft:DejaVu Sans Mono:size=9
-! NOTE letter spacing is specific to pragmata pro here!
-! URxvt.letterSpace:                         -2
 URxvt*jumpScroll:                     true
 URxvt*scrollBar:                      off
 URxvt*saveLines:                      20000
