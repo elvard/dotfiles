@@ -1,0 +1,21 @@
+#!/bin/sh
+export PATH=$HOME/.cabal/bin:$HOME/.bin:$PATH
+export STARTUP=$HOME/.cabal/bin/xmonad
+
+xsetroot -cursor_name left_ptr
+
+# Generated randr command with arandr
+.screenlayout/default.sh
+
+nitrogen --restore &
+
+trayer --edge bottom --align right
+       --SetDockType true --SetPartialStrut true
+       --expand true --widthtype percent --width 5
+       --transparent true --alpha 0 --tint 0x002b36
+       --height 18 &
+
+urxvtd -q -o -f &
+
+# Requires Debian's Xsession script with Xsession.d batteries included...
+/etc/X11/Xsession
