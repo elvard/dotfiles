@@ -1,0 +1,9 @@
+Config {
+	 commands = [ Run StdinReader ]
+    , position = BottomW L 100
+    , bgColor = "#002b36",
+    , fgColor = "#93a1a1",
+    , font = "xft:Droid Sans Mono:size=9:antialias=True"
+    , template = " %StdinReader% "
+    , lowerOnStart = False
+}

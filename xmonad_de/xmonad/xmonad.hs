@@ -39,7 +39,7 @@ confModMask = mod4Mask
 
 myTerminal = "urxvtc"
 
-myConfig hs = let config = ewmh $ withUrgencyHook NoUrgencyHook $ kde4Config { 
+myConfig hs = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
       modMask            = confModMask
     , handleEventHook    = myEventHook
     , manageHook         = myManageHook
@@ -63,7 +63,7 @@ myLogHook hs = do
     updatePointer (Relative 0.95 0.95)
 
 myEventHook = 
-        handleEventHook kde4Config 
+        handleEventHook defaultConfig 
     <+> fullscreenEventHook
  
 myManageHook = 
@@ -168,7 +168,8 @@ multiPP' dynlStr focusPP unfocusPP handles = do
     return ()
  
 xmobarScreen :: Int -> IO Handle
-xmobarScreen = spawnPipe . ("xmobar -x " ++) . show
+xmobarScreen 0 = spawnPipe "xmobar -x 0 ~/.xmobar.master"
+xmobarScreen s = spawnPipe $ "xmobar -x " ++ show s ++ " ~/.xmobar.slave"
 
 main :: IO ()
 main = do

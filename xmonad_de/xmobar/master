@@ -20,7 +20,7 @@ Config {
         , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
         , Run DateZone "%V, %a %d. %B %H:%M" "" "" "date" 10
         ]
-    , position = BottomW L 100
+    , position = BottomW L 95
     , bgColor = "#002b36",
     , fgColor = "#93a1a1",
     , font = "xft:Droid Sans Mono:size=9:antialias=True"
