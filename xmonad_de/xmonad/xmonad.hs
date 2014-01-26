@@ -1,3 +1,22 @@
+{-# OPTIONS_GHC -W -fno-warn-missing-signatures -fwarn-unused-imports #-}
+-----------------------------------------------------------------------------
+---- |
+---- Copyright   :  (c) Tomas Ehrlich 2014-2314
+---- License     :  WTFPL
+----
+---- Maintainer  :  tomas.ehrlich@gmail.com
+---- Stability   :  unstableLayoutScreens
+---- Portability :  unportable
+----
+---- My Xmonad config.
+----
+---- Requires latest xmonad, xmonad-contrib and xmobar.
+----
+---- Thanks to:
+----    Thomas Frössman -- https://github.com/thomasf/dotfiles-thomasf-xmonad/
+----    adamvo -- http://www.haskell.org/haskellwiki/Xmonad/Config_archive/adamvo%27s_xmonad.hs
+----
+-------------------------------------------------------------------------------
 import           Control.Monad (when)
 import           System.IO
 import qualified System.IO.UTF8
@@ -92,6 +111,13 @@ myKeys conf =
     , ("M-C-d", addName "Swap current display witn previous" $ swapPrevScreen >> prevScreen >> nextScreen >> movePointer )
     , ("M-S-f", addName "Move window to next screen"         $ shiftNextScreen >> nextScreen >> movePointer )
     , ("M-S-d", addName "Move window to previous screen"     $ shiftPrevScreen >> prevScreen >> movePointer )
+    ] ++
+    subtitle "Other window actions": mkNamedKeymap conf
+    [ ("M-<Return>", addName "Swap the focused window and the master window" $ windows W.swapMaster >> movePointer)
+    , ("M-t",        addName "Push the window into tiling mode"              $ withFocused (windows . W.sink) >> movePointer)
+    , ("M-C-c",      addName "kill"                                            kill)
+    , ("M-u",        addName "Focus urgent winow"                            $ focusUrgent >> movePointer )
+    , ("M-C-u",      addName "Clear all urgent window statuses"              $ clearUrgents >> focusUrgent)
     ] ++
     subtitle "Application launching": mkNamedKeymap conf
     [ ("M-p",   addName "App launcher" $ shellPrompt myXPConfig)
