@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+BASEDIR=`pwd`/`dirname $0`
+
+set -x
+
+ln -s $BASEDIR/xmobar/master $HOME/.xmobar.master
+ln -s $BASEDIR/xmobar/slave $HOME/.xmobar.slave
+
+[[ -f $HOME/.xmonad ]] && ln -s $BASEDIR/xmonad/ $HOME/.xmonad
+
+set +x

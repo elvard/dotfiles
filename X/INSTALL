@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+BASEDIR=`pwd`/`dirname $0`
+
+set -x
+
+ln -s $BASEDIR/xinitrc $HOME/.xinitrc
+
+[[ ! -f ~/.Xresources ]] && echo "#include \"$BASEDIR/xresources/default\"" >> ~/.Xresources
+
+set +x

@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+CONFIG=(X xmonad_de kde)
+
+for config in $CONFIG; do
+    install="$config/INSTALL"
+    if [[ -f $install ]]; then
+        echo ":: Installing $config."
+        $install
+        echo ":: Finished installing $config.\n"
+    fi
+done

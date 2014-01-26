@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+echo "KDE isn't used anymore"
+exit
+
+BASEDIR=`pwd`/`dirname $0`
+
+set -x
+
+ln -s $BASEDIR/env $HOME/.kde/
+
+set +x
