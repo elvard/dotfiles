@@ -1,6 +1,6 @@
 #include "common"
 
-Xmessage*background:          #002b36
+Xmessage*background:          [95]#002b36
 Xmessage*foreground:          #839496
 
 URxvt*colorUL:                #859900
@@ -14,14 +14,14 @@ URxvt*color5:                 #d33682
 URxvt*color13:                #6c71c4
 URxvt*color6:                 #2aa198
 
-URxvt*background:             #002b36
+URxvt*background:             [95]#002b36
 URxvt*foreground:             #839496
-URxvt*fadeColor:              #002b36
+URxvt*fadeColor:              [95]#002b36
 URxvt*cursorColor:            #93a1a1
 URxvt*pointerColorBackground: #586e75
 URxvt*pointerColorForeground: #93a1a1
 URxvt*scrollColor:            #657b83
-URxvt*borderColor:            #002b36
+URxvt*borderColor:            [95]#002b36
 URxvt*color0:                 #073642
 URxvt*color8:                 #839496
 URxvt*color10:                #586e75

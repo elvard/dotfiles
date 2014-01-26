@@ -11,8 +11,10 @@ URxvt*fading:                         0
 URxvt*:borderLess:                    true
 URxvt*internalBorder:                 7
 
+URxvt*depth:                          32
+URxvt*transparent:                    false
 URxvt*cursorBlink:                    false
-URxvt*font:                           xft:DejaVu Sans Mono:size=9
+URxvt*font:                           xft:Droid Sans Mono:size=9
 URxvt*jumpScroll:                     true
 URxvt*scrollBar:                      off
 URxvt*saveLines:                      20000
@@ -39,18 +41,10 @@ URxvt*dynamicColors:                  on
 
 !---- URxvt - Scratcpad terminals {
 scratchpad_smallTerminal*scrollBar:        false
-
 scratchpad_largeTerminal*scrollBar:        false
 
 htop*saveLines:                            0
 htop*scrollBar:                            false
-
-dstat*internalBorder:                      8
-dstat*saveLines:                           1000
-dstat*scrollBar:                           8
-
-pamixer*saveLines:                         0
-pamixer*scrollBar:                         false
 
 ncmpcpp*scrollBar:                         false
 ncmpcpp*saveLines:                         0

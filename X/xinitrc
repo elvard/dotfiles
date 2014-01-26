@@ -2,7 +2,10 @@
 export PATH=$HOME/.cabal/bin:$HOME/.bin:$PATH
 export STARTUP=$HOME/.cabal/bin/xmonad
 
+xset -b &
 xsetroot -cursor_name left_ptr &
+setxkbmap -layout us,cz_qwerty -option grp:alt_shift_toggle &
+xcompmgr &
 
 # Generated randr command with arandr
 .screenlayout/default.sh
