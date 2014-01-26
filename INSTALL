@@ -10,3 +10,5 @@ for config in $CONFIG; do
         echo ":: Finished installing $config.\n"
     fi
 done
+
+ln -s `pwd`/gitconfig ~/.gitconfig
