@@ -27,14 +27,11 @@ import qualified Solarized as Sol
 import           XMonad
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.GridSelect
-import           XMonad.Actions.PhysicalScreens
 import           XMonad.Actions.UpdatePointer
 import           XMonad.Config.Desktop
-import           XMonad.Config.Kde
 import           XMonad.Hooks.DynamicBars
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
-import           XMonad.Hooks.ICCCMFocus
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
