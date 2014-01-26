@@ -1,11 +1,4 @@
-import           Control.Applicative
 import           Control.Monad (when)
-import           Control.Monad.Instances ()
-import           Control.Monad.Writer
-import           Data.List
-import           Data.Maybe
-import           Data.Traversable(traverse)
-import           Graphics.X11.Xinerama
 import           System.IO
 import qualified System.IO.UTF8
 import           System.Environment (getArgs)
@@ -14,10 +7,12 @@ import qualified Solarized as Sol
 
 import           XMonad
 import           XMonad.Actions.CycleWS
+import           XMonad.Actions.GridSelect
 import           XMonad.Actions.PhysicalScreens
 import           XMonad.Actions.UpdatePointer
 import           XMonad.Config.Desktop
 import           XMonad.Config.Kde
+import           XMonad.Hooks.DynamicBars
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ICCCMFocus
@@ -27,6 +22,8 @@ import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Fullscreen (fullscreenManageHook)
+import           XMonad.Prompt
+import           XMonad.Prompt.Shell
 import qualified XMonad.StackSet as W
 import           XMonad.Util.EZConfig
 import           XMonad.Util.NamedActions
@@ -39,12 +36,12 @@ confModMask = mod4Mask
 
 myTerminal = "urxvtc"
 
-myConfig hs = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
+myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
       modMask            = confModMask
     , handleEventHook    = myEventHook
     , manageHook         = myManageHook
     , layoutHook         = myLayout
-    , logHook            = myLogHook hs
+    , logHook            = myLogHook
     , startupHook        = myStartupHook
     , terminal           = myTerminal
     , normalBorderColor  = Sol.base02
@@ -58,13 +55,14 @@ myConfig hs = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig 
             hClose h
             return ()
 
-myLogHook hs = do
-    multiPP focusedScreenPP unfocusedScreenPP hs
+myLogHook = do
+    multiPP focusedScreenPP unfocusedScreenPP
     updatePointer (Relative 0.95 0.95)
 
 myEventHook = 
         handleEventHook defaultConfig 
     <+> fullscreenEventHook
+    <+> dynStatusBarEventHook myStatusBar myStatusBarCleanup
  
 myManageHook = 
         fullscreenManageHook
@@ -82,7 +80,9 @@ myManageHook =
         myOtherFloats = ["alsamixer"]
         webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
 
-myStartupHook = setWMName "LG3D"
+myStartupHook =
+        dynStatusBarStartup myStatusBar myStatusBarCleanup
+     >> setWMName "LG3D"
 
 myKeys conf = 
     subtitle "Cyclic display actions": mkNamedKeymap conf
@@ -94,10 +94,12 @@ myKeys conf =
     , ("M-S-d", addName "Move window to previous screen"     $ shiftPrevScreen >> prevScreen >> movePointer )
     ] ++
     subtitle "Application launching": mkNamedKeymap conf
-    [ ("M-o v", toggleScratch "pamixer")
+    [ ("M-p",   addName "App launcher" $ shellPrompt myXPConfig)
+    , ("M-S-p", addName "Favorite apps" $ spawnSelected defaultGSConfig ["google-chrome","pycharm", "dolphin"])
+    , ("M-o v", toggleScratch "pamixer")
     , ("M-o h", toggleScratch "htop")
-    , ("M-z", toggleScratch "terminal")
-    , ("M-n", addName "Start new Pomodoro session" $ spawn "touch ~/.pomodoro_session")
+    , ("M-z",   toggleScratch "terminal")
+    , ("M-n",   addName "Start new Pomodoro session" $ spawn "touch ~/.pomodoro_session")
     ]
     where
         movePointer = updatePointer (Relative 0.95 0.95)
@@ -126,7 +128,18 @@ myCenterFloat w h = customFloating $ W.RationalRect left top width height
     height = h
     left = (1 - width) / 2
     top = (1 - height) / 2
- 
+
+myXPConfig = defaultXPConfig 
+    { position = Bottom
+    , bgColor = Sol.base03
+    , fgColor = Sol.base2
+    , bgHLight = Sol.base03
+    , fgHLight = Sol.yellow
+    , borderColor = Sol.base03
+    , promptBorderWidth = 8
+    , font = "xft:Droid Sans Mono:size=9:antialias=True"
+}
+
 focusedScreenPP :: PP
 focusedScreenPP = namedScratchpadFilterOutWorkspacePP $ defaultPP {
       ppLayout  = xmobarColor Sol.yellow ""
@@ -140,40 +153,16 @@ focusedScreenPP = namedScratchpadFilterOutWorkspacePP $ defaultPP {
 
 unfocusedScreenPP :: PP
 unfocusedScreenPP =  focusedScreenPP { ppTitle = xmobarColor Sol.base01 "" }
-
-getScreens :: IO [Int]
-getScreens = openDisplay "" >>= liftA2 (<*) f closeDisplay
-    where f = fmap (zipWith const [0..]) . getScreenInfo
-
-multiPP :: PP -- ^ The PP to use if the screen is focused
-        -> PP -- ^ The PP to use otherwise
-        -> [Handle] -- ^ Handles for the status bars, in order of increasing X
-                    -- screen number
-        -> X ()
-multiPP = multiPP' dynamicLogString
  
-multiPP' :: (PP -> X String) -> PP -> PP -> [Handle] -> X ()
-multiPP' dynlStr focusPP unfocusPP handles = do
-    state <- get
-    let pickPP :: WorkspaceId -> WriterT (Last XState) X String
-        pickPP ws = do
-            let isFoc = (ws ==) . W.tag . W.workspace . W.current $ windowset state
-            put state{ windowset = W.view ws $ windowset state }
-            out <- lift $ dynlStr $ if isFoc then focusPP else unfocusPP
-            when isFoc $ get >>= tell . Last . Just
-            return out
-    traverse put . getLast
-        =<< execWriterT . (io . zipWithM_ hPutStrLn handles <=< mapM pickPP) . catMaybes
-        =<< mapM screenWorkspace (zipWith const [0..] handles)
-    return ()
- 
-xmobarScreen :: Int -> IO Handle
-xmobarScreen 0 = spawnPipe "xmobar -x 0 ~/.xmobar.master"
-xmobarScreen s = spawnPipe $ "xmobar -x " ++ show s ++ " ~/.xmobar.slave"
+myStatusBar :: ScreenId -> IO Handle
+myStatusBar (S 0) = spawnPipe "xmobar -x 0 ~/.xmobar.master"
+myStatusBar (S s) = spawnPipe $ "xmobar -x " ++ show s ++ " ~/.xmobar.slave"
+
+myStatusBarCleanup :: IO ()
+myStatusBarCleanup = return ()
 
 main :: IO ()
 main = do
     args <- getArgs
     when ("--replace" `elem` args) replace
-    xmonad . myConfig
-        =<< mapM xmobarScreen =<< getScreens
+    xmonad myConfig
