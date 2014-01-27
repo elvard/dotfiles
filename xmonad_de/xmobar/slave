@@ -1,9 +1,12 @@
 Config {
-	 commands = [ Run StdinReader ]
+	 commands = 
+        [ Run StdinReader
+        , Run DateZone "%V, %a %d. %B %H:%M" "" "" "date" 10
+        ]
     , position = BottomW L 100
     , bgColor = "#002b36",
     , fgColor = "#93a1a1",
     , font = "xft:Droid Sans Mono:size=9:antialias=True"
-    , template = " %StdinReader% "
+    , template = " %StdinReader% }{ |<fc=#fdf3e3> %date% </fc>"
     , lowerOnStart = False
 }
