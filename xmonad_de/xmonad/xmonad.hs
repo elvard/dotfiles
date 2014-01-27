@@ -83,18 +83,11 @@ myEventHook =
 myManageHook = 
         fullscreenManageHook
     <+> namedScratchpadManageHook myScratchPads
-    <+> (composeAll . concat $
-    [ [ className   =? c --> doFloat           | c <- myFloats]
-    , [ title       =? t --> doFloat           | t <- myOtherFloats]
-    , [ className   =? c --> doF (W.shift "2") | c <- webApps]
-    , [ isFullscreen --> doFullFloat
-      , isDialog     --> doFloat
-      ]
-    ])
+    <+> composeAll
+    [ isFullscreen --> doFullFloat
+    , isDialog     --> doFloat
+    ]
     <+> manageDocks 
-  where myFloats      = ["MPlayer", "Yakuake", "Plasma", "Plasma-desktop"]
-        myOtherFloats = ["alsamixer"]
-        webApps       = ["Firefox-bin", "Opera"] -- open on desktop 2
 
 myStartupHook =
         dynStatusBarStartup myStatusBar myStatusBarCleanup
