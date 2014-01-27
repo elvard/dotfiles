@@ -14,7 +14,7 @@ nitrogen --restore &
 
 urxvtd -q -o -f &
 
-trayer --edge bottom --align right \
+trayer --monitor primary --edge bottom --align right \
        --SetDockType true --SetPartialStrut true \
        --expand true --widthtype percent --width 5 \
        --transparent true --alpha 0 --tint 0x002b36 \
