@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+BASEDIR=`pwd`/`dirname $0`
+USERBIN=$HOME/.bin
+
+files=$(ls | grep -v INSTALL)
+
+set -x
+
+mkdir -p $USERBIN
+
+for file in $files; do
+    ln -s $BASEDIR/$file $USERBIN/$file
+done
+
+set +x

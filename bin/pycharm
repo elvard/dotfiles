@@ -1,0 +1,6 @@
+#!/bin/sh
+
+wmname LG3D && \
+PYCHARM_JDK=/usr/lib/jvm/j2sdk1.7-oracle/ \
+~/apps/pycharm/bin/pycharm.sh
+
