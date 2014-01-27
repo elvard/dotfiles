@@ -102,12 +102,12 @@ myStartupHook =
 
 myKeys conf = 
     subtitle "Cyclic display actions": mkNamedKeymap conf
-    [ ("M-f",   addName "Next screen"                        $ nextScreen >> movePointer)
-    , ("M-d",   addName "Previous screen"                    $ prevScreen >> movePointer)
-    , ("M-C-f", addName "Swap current display witn next"     $ swapNextScreen >> nextScreen >> prevScreen >> movePointer )
-    , ("M-C-d", addName "Swap current display witn previous" $ swapPrevScreen >> prevScreen >> nextScreen >> movePointer )
-    , ("M-S-f", addName "Move window to next screen"         $ shiftNextScreen >> nextScreen >> movePointer )
-    , ("M-S-d", addName "Move window to previous screen"     $ shiftPrevScreen >> prevScreen >> movePointer )
+    [ ("M-e",   addName "Next screen"                        $ nextScreen >> movePointer)
+    , ("M-w",   addName "Previous screen"                    $ prevScreen >> movePointer)
+    , ("M-C-e", addName "Swap current display witn next"     $ swapNextScreen >> nextScreen >> prevScreen >> movePointer )
+    , ("M-C-w", addName "Swap current display witn previous" $ swapPrevScreen >> prevScreen >> nextScreen >> movePointer )
+    , ("M-S-e", addName "Move window to next screen"         $ shiftNextScreen >> nextScreen >> movePointer )
+    , ("M-S-w", addName "Move window to previous screen"     $ shiftPrevScreen >> prevScreen >> movePointer )
     ] ++
     subtitle "Other window actions": mkNamedKeymap conf
     [ ("M-<Return>", addName "Swap the focused window and the master window" $ windows W.swapMaster >> movePointer)
