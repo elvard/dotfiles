@@ -14,7 +14,7 @@ URxvt*internalBorder:                 7
 URxvt*depth:                          32
 URxvt*transparent:                    false
 URxvt*cursorBlink:                    false
-URxvt*font:                           xft:Droid Sans Mono:size=9
+URxvt*font:                           xft:DejaVu Sans Mono:size=9
 URxvt*jumpScroll:                     true
 URxvt*scrollBar:                      off
 URxvt*saveLines:                      20000

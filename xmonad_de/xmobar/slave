@@ -6,7 +6,7 @@ Config {
     , position = BottomW L 100
     , bgColor = "#002b36",
     , fgColor = "#93a1a1",
-    , font = "xft:Droid Sans Mono:size=9:antialias=True"
+    , font = "xft:DejaVu Sans Mono:size=9:antialias=True"
     , template = " %StdinReader% }{ |<fc=#fdf3e3> %date% </fc>"
     , lowerOnStart = False
 }

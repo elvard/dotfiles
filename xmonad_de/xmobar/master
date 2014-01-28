@@ -18,13 +18,12 @@ Config {
                              "-h", "70",
                              "-n", "#859900"] 20
         , Run Kbd [("cz(qwerty)", "cz")]
-        , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
         , Run DateZone "%V, %a %d. %B %H:%M" "" "" "date" 10
         ]
     , position = BottomW L 95
     , bgColor = "#002b36",
     , fgColor = "#93a1a1",
-    , font = "xft:Droid Sans Mono:size=9:antialias=True"
-    , template = " %StdinReader% }{ %pomodoro% | <fc=#fdf3e3>%kbd%</fc> | %memory% %swap% | %multicpu%  %thermal0% |<fc=#fdf3e3> %date% </fc>"
+    , font = "xft:DejaVu Sans Mono:size=9:antialias=True"
+    , template = " %StdinReader% }{ <fc=#fdf3e3>%kbd%</fc> | %memory% %swap% | %multicpu%  %thermal0% |<fc=#fdf3e3> %date% </fc>"
     , lowerOnStart = False
 }
