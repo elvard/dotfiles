@@ -62,6 +62,7 @@ myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig {
     , terminal           = myTerminal
     , normalBorderColor  = Sol.base02
     , focusedBorderColor = Sol.yellow
+    , focusFollowsMouse  = False
     } in addDescrKeys ((confModMask, xK_F1), showKeybindings) myKeys $ config
     where
         showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
