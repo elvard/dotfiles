@@ -13,6 +13,7 @@ xcompmgr &
 nitrogen --restore &
 
 urxvtd -q -o -f &
+pamusb-agent &
 
 trayer --monitor primary --edge bottom --align right \
        --SetDockType true --SetPartialStrut true \
