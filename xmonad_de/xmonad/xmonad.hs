@@ -21,6 +21,7 @@ import           Control.Monad (when)
 import           System.IO
 import qualified System.IO.UTF8
 import           System.Environment (getArgs)
+import           System.Exit
 
 import qualified Solarized as Sol
 
@@ -35,8 +36,10 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
-import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Fullscreen (fullscreenManageHook)
+import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.MultiToggle.Instances
+import           XMonad.Layout.NoBorders
 import           XMonad.Prompt
 import           XMonad.Prompt.Shell
 import qualified XMonad.StackSet as W
@@ -94,6 +97,11 @@ myStartupHook =
      >> setWMName "LG3D"
 
 myKeys conf = 
+    subtitle "Layout": mkNamedKeymap conf
+    [ ("M-S",         addName "Toggle layout"                $ sendMessage $ NextLayout )
+    , ("M-S-<Space>", addName "Toggle mirrored layout"       $ sendMessage $ Toggle MIRROR )
+    , ("M-C-<Space>", addName "Toggle fullscreen layout"     $ sendMessage $ Toggle NBFULL )
+    ] ++
     subtitle "Cyclic display actions": mkNamedKeymap conf
     [ ("M-e",   addName "Next screen"                        $ nextScreen >> movePointer)
     , ("M-w",   addName "Previous screen"                    $ prevScreen >> movePointer)
@@ -116,13 +124,23 @@ myKeys conf =
     , ("M-o h", toggleScratch "htop")
     , ("M-z",   toggleScratch "terminal")
     , ("M-n",   addName "Start new Pomodoro session" $ spawn "touch ~/.pomodoro_session")
+    ] ++
+    subtitle "XMonad": mkNamedKeymap conf
+    [ ("M-C-S q",     addName "Restart XMonad"                       $ restart "xmonad" True)
+    , ("M-C-S q q",   addName "Restart XMonad without keeping state" $ restart "xmonad" False)
+    , ("M-C-S q q q", addName "Exit XMonad"                          $ io (exitWith ExitSuccess))
     ]
     where
         movePointer = updatePointer (Relative 0.95 0.95)
         toggleScratch cmd' = addName("Toggle " ++ cmd' ++ " scratchpad ") $ namedScratchpadAction myScratchPads cmd'
         
 
-myLayout = smartBorders $ avoidStruts $ Full ||| tiled
+myLayout = id
+    . smartBorders
+    . avoidStruts
+    . mkToggle1 NBFULL
+    . mkToggle1 MIRROR
+    $ Full ||| tiled
     where
         tiled   = Tall nmaster delta ratio
         nmaster = 1
