@@ -28,7 +28,6 @@ import           XMonad
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.GridSelect
 import           XMonad.Actions.UpdatePointer
-import           XMonad.Config.Desktop
 import           XMonad.Hooks.DynamicBars
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
@@ -123,7 +122,7 @@ myKeys conf =
         toggleScratch cmd' = addName("Toggle " ++ cmd' ++ " scratchpad ") $ namedScratchpadAction myScratchPads cmd'
         
 
-myLayout = desktopLayoutModifiers $ smartBorders $ avoidStruts $ Full ||| tiled
+myLayout = smartBorders $ avoidStruts $ Full ||| tiled
     where
         tiled   = Tall nmaster delta ratio
         nmaster = 1
