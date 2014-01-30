@@ -1,12 +1,14 @@
 #!/bin/zsh
 
-echo "KDE isn't used anymore"
-exit
-
 BASEDIR=`pwd`/`dirname $0`
 
 set -x
 
-ln -s $BASEDIR/env $HOME/.kde/
+# These scripts aren't necessary when running bare xmonad
+# ln -s $BASEDIR/env $HOME/.kde/
+
+for file in `ls konsole`; do
+    ln -s $BASEDIR/konsole/$file $HOME/.kde/share/apps/konsole/
+done
 
 set +x

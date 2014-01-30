@@ -52,7 +52,7 @@ import           XMonad.Util.WorkspaceCompare
 
 confModMask = mod4Mask
 
-myTerminal = "urxvtc"
+myTerminal = "konsole"
 
 myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
       modMask            = confModMask
