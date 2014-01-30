@@ -152,12 +152,12 @@ myLayout = id
         ratio   = 1/2
         delta   = 3/100
 
-myScratchPads = [ NS "terminal" (term "terminal") (res =? scratch "terminal") $ myCenterFloat 0.95 0.8
+myScratchPads = [ NS "terminal" (term "terminal") (title =? scratch "terminal") $ myCenterFloat 0.95 0.8
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
-    term sname = myTerminal ++ " -name " ++ scratch sname
-    termScratch scmd = NS scmd (inTerm' scmd scmd) (res =? scratch scmd)
+    term sname = myTerminal ++ " --title " ++ scratch sname
+    termScratch scmd = NS scmd (inTerm' scmd scmd) (title =? scratch scmd)
     inTerm' sname scmd = term sname ++ " -e " ++  scmd
     res = resource
 
@@ -176,7 +176,7 @@ myXPConfig = defaultXPConfig
     , fgHLight = Sol.yellow
     , borderColor = Sol.base03
     , promptBorderWidth = 8
-    , font = "xft:Droid Sans Mono:size=9:antialias=True"
+    , font = "xft:DejaVu Sans Mono:size=9:antialias=True"
 }
 
 focusedScreenPP :: PP

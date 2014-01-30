@@ -1,0 +1,51 @@
+DISABLE_AUTO_TITLE=true
+
+source "$HOME/.antigen/antigen.zsh"
+antigen use oh-my-zsh
+antigen bundle arialdomartini/oh-my-git
+antigen bundle command-not-found
+antigen bundle git
+antigen bundle pip
+antigen bundle virtualenvwrapper
+antigen bundle django
+antigen bundle colored-man
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-history-substring-search
+antigen theme arialdomartini/oh-my-git-themes arialdo-granzestyle
+antigen apply
+
+# Customize to your needs...
+
+PATH=$PATH:~/.bin
+
+eval `dircolors ~/.dir_colors`
+
+bindkey '^r' history-incremental-search-backward
+
+typeset -A key
+
+key[Home]=${terminfo[khome]}
+key[End]=${terminfo[kend]}
+key[Insert]=${terminfo[kich1]}
+key[Delete]=${terminfo[kdch1]}
+key[Up]=${terminfo[kcuu1]}
+key[Down]=${terminfo[kcud1]}
+key[Left]=${terminfo[kcub1]}
+key[Right]=${terminfo[kcuf1]}
+key[PageUp]=${terminfo[kpp]}
+key[PageDown]=${terminfo[knp]}
+
+# setup key accordingly
+[[ -n "${key[Home]}"    ]]  && bindkey  "${key[Home]}"    beginning-of-line
+[[ -n "${key[End]}"     ]]  && bindkey  "${key[End]}"     end-of-line
+[[ -n "${key[Insert]}"  ]]  && bindkey  "${key[Insert]}"  overwrite-mode
+[[ -n "${key[Delete]}"  ]]  && bindkey  "${key[Delete]}"  delete-char
+[[ -n "${key[Up]}"      ]]  && bindkey  "${key[Up]}"      up-line-or-search
+[[ -n "${key[Down]}"    ]]  && bindkey  "${key[Down]}"    down-line-or-search
+[[ -n "${key[Left]}"    ]]  && bindkey  "${key[Left]}"    backward-char
+[[ -n "${key[Right]}"   ]]  && bindkey  "${key[Right]}"   forward-char
+
+alias ys='yakuake_session'
+
+export WORKON_HOME=~/.envs
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'

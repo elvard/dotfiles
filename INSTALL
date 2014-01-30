@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-CONFIG=(X xmonad_de kde)
+CONFIG=(bin X xmonad_de kde zsh)
 
 for config in $CONFIG; do
     install="$config/INSTALL"
