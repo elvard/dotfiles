@@ -28,6 +28,7 @@ import qualified Solarized as Sol
 import           XMonad
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.GridSelect
+import           XMonad.Actions.GroupNavigation
 import           XMonad.Actions.UpdatePointer
 import           XMonad.Hooks.DynamicBars
 import           XMonad.Hooks.DynamicLog
@@ -75,6 +76,7 @@ myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig {
             return ()
 
 myLogHook = do
+    historyHook
     multiPP focusedScreenPP unfocusedScreenPP
     updatePointer (Relative 0.95 0.95)
 
@@ -101,6 +103,9 @@ myKeys conf =
     [ ("M-S",         addName "Toggle layout"                $ sendMessage $ NextLayout )
     , ("M-S-<Space>", addName "Toggle mirrored layout"       $ sendMessage $ Toggle MIRROR )
     , ("M-C-<Space>", addName "Toggle fullscreen layout"     $ sendMessage $ Toggle NBFULL )
+    ] ++
+    subtitle "Window actions": mkNamedKeymap conf
+    [ ("M-`",   addName "Previous selected window"           $ nextMatch History (return True))
     ] ++
     subtitle "Cyclic display actions": mkNamedKeymap conf
     [ ("M-e",   addName "Next screen"                        $ nextScreen >> movePointer)
