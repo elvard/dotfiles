@@ -41,6 +41,7 @@ import           XMonad.Layout.Fullscreen (fullscreenManageHook)
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
 import           XMonad.Layout.NoBorders
+import           XMonad.Layout.Tabbed
 import           XMonad.Prompt
 import           XMonad.Prompt.Shell
 import qualified XMonad.StackSet as W
@@ -141,22 +142,30 @@ myKeys conf =
         
 
 myLayout = id
-    . smartBorders
     . avoidStruts
     . mkToggle1 NBFULL
     . mkToggle1 MIRROR
-    $ Full ||| tiled
+    $ noBorders tabs ||| tiled
     where
         tiled   = Tall nmaster delta ratio
         nmaster = 1
         ratio   = 1/2
         delta   = 3/100
 
-myScratchPads = [ NS "terminal" (term "terminal") (title =? scratch "terminal") $ myCenterFloat 0.95 0.8
+        tabs           = tabbed shrinkText solarizedTheme
+        solarizedTheme = defaultTheme 
+            { inactiveColor         = Sol.base03
+            , inactiveBorderColor   = Sol.base03
+            , activeColor           = Sol.base02
+            , activeBorderColor     = Sol.yellow
+            , fontName              = "xft:DejaVu Sans:size=8"
+            }
+
+myScratchPads = [ NS "terminal" (term "terminal") (resource =? scratch "terminal") $ myCenterFloat 0.95 0.8
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
-    term sname = myTerminal ++ " --title " ++ scratch sname
+    term sname = myTerminal ++ "--name " ++ scratch sname
     termScratch scmd = NS scmd (inTerm' scmd scmd) (title =? scratch scmd)
     inTerm' sname scmd = term sname ++ " -e " ++  scmd
     res = resource
