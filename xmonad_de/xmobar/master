@@ -19,11 +19,13 @@ Config {
                              "-n", "#859900"] 20
         , Run Kbd [("cz(qwerty)", "cz")]
         , Run DateZone "%V, %a %d. %B %H:%M" "" "" "date" 10
+        , Run Battery ["-t", "B: <acstatus><left>% (<timeleft>)", "--",
+                       "-O", "AC/On ", "-i", "AC/Idle ", "-o", ""] 600
         ]
     , position = BottomW L 95
     , bgColor = "#002b36",
     , fgColor = "#93a1a1",
     , font = "xft:DejaVu Sans Mono:size=9:antialias=True"
-    , template = " %StdinReader% }{ <fc=#fdf3e3>%kbd%</fc> | %memory% %swap% | %multicpu%  %thermal0% |<fc=#fdf3e3> %date% </fc>"
+    , template = " %StdinReader% }{ <fc=#fdf3e3>%kbd%</fc> | %memory% %swap% | %multicpu%  %thermal0% | %battery% |<fc=#fdf3e3> %date% </fc>"
     , lowerOnStart = False
 }
