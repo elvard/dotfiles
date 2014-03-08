@@ -54,7 +54,7 @@ import           XMonad.Util.WorkspaceCompare
 
 confModMask = mod4Mask
 
-myTerminal = "konsole"
+myTerminal = "urxvtc"
 
 myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
       modMask            = confModMask
@@ -165,7 +165,7 @@ myScratchPads = [ NS "terminal" (term "terminal") (resource =? scratch "terminal
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
-    term sname = myTerminal ++ "--name " ++ scratch sname
+    term sname = myTerminal ++ " -name " ++ scratch sname
     termScratch scmd = NS scmd (inTerm' scmd scmd) (title =? scratch scmd)
     inTerm' sname scmd = term sname ++ " -e " ++  scmd
     res = resource

@@ -12,8 +12,7 @@ xcompmgr &
 
 nitrogen --restore &
 
-# Disabled, using konsole
-# urxvtd -q -o -f &
+urxvtd -q -o -f &
 pamusb-agent &
 
 trayer --monitor primary --edge bottom --align right \
