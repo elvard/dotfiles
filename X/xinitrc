@@ -9,7 +9,6 @@ xcompmgr &
 
 # Generated randr command with arandr
 .screenlayout/default.sh
-
 nitrogen --restore &
 
 urxvtd -q -o -f &
@@ -22,8 +21,8 @@ trayer --monitor primary --edge bottom --align right \
        --height 18 &
 
 nm-applet &
-
 claws-mail &
+ssh-add &
 
 # Requires Debian's Xsession script with Xsession.d batteries included...
 /etc/X11/Xsession
