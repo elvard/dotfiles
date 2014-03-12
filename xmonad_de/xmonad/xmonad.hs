@@ -79,7 +79,6 @@ myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig {
 myLogHook = do
     historyHook
     multiPP focusedScreenPP unfocusedScreenPP
-    updatePointer (Relative 0.95 0.95)
 
 myEventHook = 
         handleEventHook defaultConfig 
