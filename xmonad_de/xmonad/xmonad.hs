@@ -56,13 +56,14 @@ confModMask = mod4Mask
 
 myTerminal = "urxvtc"
 
-myConfig = let config = ewmh $ withUrgencyHook NoUrgencyHook $ defaultConfig { 
+myConfig = let config = withUrgencyHook NoUrgencyHook $ defaultConfig { 
       modMask            = confModMask
     , handleEventHook    = myEventHook
     , manageHook         = myManageHook
     , layoutHook         = myLayout
     , logHook            = myLogHook
     , startupHook        = myStartupHook
+    , workspaces         = myWorkspaces
     , terminal           = myTerminal
     , normalBorderColor  = Sol.base02
     , focusedBorderColor = Sol.yellow
@@ -84,12 +85,20 @@ myEventHook =
         handleEventHook defaultConfig 
     <+> fullscreenEventHook
     <+> dynStatusBarEventHook myStatusBar myStatusBarCleanup
+
+myWorkspaces = zipWith wsName names [1..]
+    where wsName s n = show n ++ ":" ++ s
+          names = ["monitor", "web", "code", "debug", "movie"]
+
+pycharmClass = "jetbrains-pycharm"
  
 myManageHook = 
         fullscreenManageHook
     <+> namedScratchpadManageHook myScratchPads
     <+> composeAll
-    [ isFullscreen --> doFullFloat
+    [ className =? pycharmClass --> doShift "3:code"
+    , className =? pycharmClass <&&> title =? "Run" --> doShift "4:debug"
+    , isFullscreen --> doFullFloat
     , isDialog     --> doFloat
     ]
     <+> manageDocks 
@@ -142,6 +151,7 @@ myKeys conf =
 
 myLayout = id
     . avoidStruts
+    . smartBorders
     . mkToggle1 NBFULL
     . mkToggle1 MIRROR
     $ noBorders tabs ||| tiled
@@ -160,7 +170,7 @@ myLayout = id
             , fontName              = "xft:DejaVu Sans:size=8"
             }
 
-myScratchPads = [ NS "terminal" (term "terminal") (resource =? scratch "terminal") $ myCenterFloat 0.95 0.8
+myScratchPads = [ NS "terminal" (term "terminal") (title =? scratch "terminal") $ myCenterFloat 0.95 0.8
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
