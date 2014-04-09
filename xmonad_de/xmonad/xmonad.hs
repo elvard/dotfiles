@@ -137,6 +137,7 @@ myKeys conf =
     , ("M-o v", toggleScratch "pamixer")
     , ("M-o h", toggleScratch "htop")
     , ("M-z",   toggleScratch "terminal")
+    , ("M-<Print>", addName "Take screenshot" $ spawn "ksnapshot")
     , ("M-n",   addName "Start new Pomodoro session" $ spawn "touch ~/.pomodoro_session")
     ] ++
     subtitle "XMonad": mkNamedKeymap conf
