@@ -133,7 +133,7 @@ myKeys conf =
     ] ++
     subtitle "Application launching": mkNamedKeymap conf
     [ ("M-p",   addName "App launcher" $ shellPrompt myXPConfig)
-    , ("M-S-p", addName "Favorite apps" $ spawnSelected defaultGSConfig ["google-chrome","pycharm", "dolphin"])
+    , ("M-S-p", addName "Favorite apps" $ spawnSelected defaultGSConfig ["google-chrome","pycharm", "sublime_text", "dolphin"])
     , ("M-o v", toggleScratch "pamixer")
     , ("M-o h", toggleScratch "htop")
     , ("M-z",   toggleScratch "terminal")

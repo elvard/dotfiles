@@ -22,6 +22,7 @@ trayer --monitor primary --edge bottom --align right \
 
 nm-applet &
 claws-mail &
+~/.dropbox-dist/dropboxd &
 ssh-add &
 
 # Requires Debian's Xsession script with Xsession.d batteries included...
