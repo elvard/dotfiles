@@ -171,7 +171,7 @@ myLayout = id
             , fontName              = "xft:DejaVu Sans:size=8"
             }
 
-myScratchPads = [ NS "terminal" (term "terminal") (title =? scratch "terminal") $ myCenterFloat 0.95 0.8
+myScratchPads = [ NS "terminal" (term "terminal") (resource =? scratch "terminal") $ myCenterFloat 0.95 0.8
                 , termScratch "htop" $ myCenterFloat 0.95 0.9]
   where
     scratch sname = "scratchpad_" ++ sname
